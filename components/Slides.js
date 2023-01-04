@@ -1,6 +1,6 @@
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import SCREEN_HEIGHT, { getImgPath } from "../common/util";
+import { SCREEN_HEIGHT, getImgPath } from "../common/util";
 import styled from "@emotion/native";
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -49,11 +49,10 @@ const Slides = ({ movie }) => {
 export default Slides;
 
 // Main section
-const SwiperChildView = styled.View`
+const SwiperChildView = styled.TouchableOpacity`
   flex: 1;
   justify-content: flex-end;
-  height: 250px;
-  /* FIXME: SCREEN HEIGHT로 하면 오류 */
+  height: ${SCREEN_HEIGHT / 3 + "px"};
   background-color: green;
 `;
 
