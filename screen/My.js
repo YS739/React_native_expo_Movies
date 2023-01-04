@@ -1,23 +1,29 @@
-import React, { useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import { ScrollView, Text } from "react-native";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 
-const My = ({ navigation: { navigate } }) => {
-  useFocusEffect(
-    useCallback(() => {
-      console.log("Focus");
-      return () => {
-        console.log("Blur");
-      };
-    }, [])
-  );
+const My = ({ navigation: { reset, navigate } }) => {
   return (
-    <ScrollView>
-      <Text>My movies</Text>
-    </ScrollView>
+    <View>
+      <Text>My</Text>
+      <TouchableOpacity
+        onPress={() =>
+          reset({
+            index: 0,
+            routes: [
+              {
+                name: "Tabs",
+                params: {
+                  screen: "Movies",
+                },
+              },
+            ],
+          })
+        }
+      >
+        <Text>Try unmounting</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 export default My;
-
-// Styled components
