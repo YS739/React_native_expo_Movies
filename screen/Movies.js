@@ -19,7 +19,6 @@ const Movies = ({ navigation: { navigate } }) => {
       `${BASE_URL}/now_playing?api_key=${API_KEY}&language=en-US&page=1`
     ).then((res) => res.json());
     setNowPlayings(results);
-    setIsLoading(false);
   };
 
   const getTopRated = async () => {
@@ -27,7 +26,6 @@ const Movies = ({ navigation: { navigate } }) => {
       `${BASE_URL}/top_rated?api_key=${API_KEY}&language=en-US&page=1`
     ).then((res) => res.json());
     setTopRated(results);
-    setIsLoading(false);
   };
 
   const getUpcoming = async () => {
@@ -35,13 +33,16 @@ const Movies = ({ navigation: { navigate } }) => {
       `${BASE_URL}/upcoming?api_key=${API_KEY}&language=en-US&page=1`
     ).then((res) => res.json());
     setUpComing(results);
+  };
+
+  //   모든 함수가 실행 되면 isLoading(false)로 만들기
+  const getData = async () => {
+    await Promise.all([getNowPlayings(), getTopRated(), getUpcoming()]);
     setIsLoading(false);
   };
 
   useEffect(() => {
-    getNowPlayings();
-    getTopRated();
-    getUpcoming();
+    getData();
   }, []);
 
   if (isLoading) {
@@ -81,8 +82,6 @@ const Movies = ({ navigation: { navigate } }) => {
 export default Movies;
 
 // Styled components
-
-// 공통 적용
 const Loader = styled.View`
   flex: 1;
   justify-content: center;
