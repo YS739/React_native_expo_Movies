@@ -1,25 +1,27 @@
 import React from "react";
-import { View } from "react-native";
 import styled from "@emotion/native";
 import { getImgPath } from "../common/util";
+import { useNavigation } from "@react-navigation/native";
 
-const TopSlides = ({ top }) => {
+const TopSlides = ({ movie }) => {
+  const { navigate } = useNavigation();
+
   return (
     <TRWrapper
       onPress={() =>
-        navigate("Stacks", { screen: "Detail", params: { id: 123 } })
+        navigate("Stacks", { screen: "Detail", params: { movieId: movie.id } })
       }
     >
       <TRPoster
         source={{
-          uri: getImgPath(top.poster_path),
+          uri: getImgPath(movie.poster_path),
         }}
       />
       <TRMovieDesc>
-        <Rating>⭐ {top.vote_average}/10</Rating>
+        <Rating>⭐ {movie.vote_average}/10</Rating>
         <TRTitle>
-          {top.title.slice(0, 11)}
-          {top.title.length > 11 && "..."}
+          {movie.title.slice(0, 11)}
+          {movie.title.length > 11 && "..."}
         </TRTitle>
       </TRMovieDesc>
     </TRWrapper>

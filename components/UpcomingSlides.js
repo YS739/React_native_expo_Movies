@@ -1,26 +1,29 @@
 import React from "react";
 import styled from "@emotion/native";
 import { getImgPath } from "../common/util";
+import { useNavigation } from "@react-navigation/native";
 
-const UpcomingSlides = ({ up }) => {
+const UpcomingSlides = ({ movie }) => {
+  const { navigate } = useNavigation();
+
   return (
     <UpcomingRow
       onPress={() =>
-        navigate("Stacks", { screen: "Detail", params: { id: 123 } })
+        navigate("Stacks", { screen: "Detail", params: { movieId: movie.id } })
       }
       style={{ flexDirection: "row" }}
     >
       <UpcomingPoster
         source={{
-          uri: getImgPath(up.poster_path),
+          uri: getImgPath(movie.poster_path),
         }}
       />
       <UpcomingMovieDesc>
-        <UpcomingTitle>{up.title}</UpcomingTitle>
-        <Release>{up.release_date}</Release>
+        <UpcomingTitle>{movie.title}</UpcomingTitle>
+        <Release>{movie.release_date}</Release>
         <UpcomingOverview>
-          {up.overview.slice(0, 70)}
-          {up.overview.length > 70 && "..."}
+          {movie.overview.slice(0, 70)}
+          {movie.overview.length > 70 && "..."}
         </UpcomingOverview>
       </UpcomingMovieDesc>
     </UpcomingRow>

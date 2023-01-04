@@ -84,7 +84,7 @@ const Movies = ({ navigation: { navigate } }) => {
             contentContainerStyle={{ paddingHorizontal: 20 }}
             showsHorizontalScrollIndicator={false}
             data={topRated}
-            renderItem={({ item }) => <TopSlides top={item} />}
+            renderItem={({ item }) => <TopSlides movie={item} />}
             keyExtractor={(item) => item.id}
             ItemSeparatorComponent={<View style={{ width: 10 }} />}
           />
@@ -93,7 +93,7 @@ const Movies = ({ navigation: { navigate } }) => {
         </>
       }
       data={upComing}
-      renderItem={({ item }) => <UpcomingSlides up={item} />}
+      renderItem={({ item }) => <UpcomingSlides movie={item} />}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={<View style={{ height: 15 }} />}
       showsVerticalScrollIndicator={false}
