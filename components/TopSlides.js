@@ -1,4 +1,5 @@
 import React from "react";
+import { View } from "react-native";
 import styled from "@emotion/native";
 import { getImgPath } from "../common/util";
 
@@ -29,9 +30,8 @@ export default TopSlides;
 // Top movie section
 
 const TRWrapper = styled.TouchableOpacity`
-  background-color: black;
+  background-color: #353b48;
   border-radius: 5px;
-  margin-right: 10px;
 `;
 
 const TRPoster = styled.Image`

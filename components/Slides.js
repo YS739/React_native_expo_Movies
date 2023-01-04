@@ -46,7 +46,8 @@ export default Slides;
 const SwiperChildView = styled.View`
   flex: 1;
   justify-content: flex-end;
-  height: ${SCREEN_HEIGHT / 3 + "px"};
+  height: 250px;
+  /* FIXME: SCREEN HEIGHT로 하면 오류 */
   background-color: green;
 `;
 

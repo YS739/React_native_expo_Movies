@@ -68,33 +68,36 @@ const Movies = ({ navigation: { navigate } }) => {
   }
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+    <FlatList
+      refreshing={isRefreshing}
+      onRefresh={onRefresh}
+      ListHeaderComponent={
+        <>
+          <Swiper height="100%" showsPagination={false} autoplay loop>
+            {nowPlayings.map((movie) => (
+              <Slides key={movie.id} movie={movie} />
+            ))}
+          </Swiper>
+          <ListTitle>Top Rated Movies</ListTitle>
+          <FlatList
+            horizontal
+            contentContainerStyle={{ paddingHorizontal: 20 }}
+            showsHorizontalScrollIndicator={false}
+            data={topRated}
+            renderItem={({ item }) => <TopSlides top={item} />}
+            keyExtractor={(item) => item.id}
+            ItemSeparatorComponent={<View style={{ width: 10 }} />}
+          />
+
+          <ListTitle>Upcoming Movies</ListTitle>
+        </>
       }
-    >
-      <Swiper height="100%" showsPagination={false} autoplay loop>
-        {nowPlayings.map((movie) => (
-          <Slides key={movie.id} movie={movie} />
-        ))}
-      </Swiper>
-
-      <ListTitle>Top Rated Movies</ListTitle>
-      <FlatList
-        horizontal
-        contentContainerStyle={{ paddingHorizontal: 20 }}
-        showsHorizontalScrollIndicator={false}
-        data={topRated}
-        renderItem={({ item }) => <TopSlides top={item} />}
-        keyExtractor={(item) => item.id}
-        ItemSeparatorComponent={<View style={{ width: 10 }} />}
-      ></FlatList>
-
-      <ListTitle>Upcoming Movies</ListTitle>
-      {upComing.map((up) => (
-        <UpcomingSlides key={up.id} up={up} />
-      ))}
-    </ScrollView>
+      data={upComing}
+      renderItem={({ item }) => <UpcomingSlides up={item} />}
+      keyExtractor={(item) => item.id}
+      ItemSeparatorComponent={<View style={{ height: 15 }} />}
+      showsVerticalScrollIndicator={false}
+    />
   );
 };
 
