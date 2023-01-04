@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, ActivityIndicator, RefreshControl } from "react-native";
+import {
+  ScrollView,
+  ActivityIndicator,
+  RefreshControl,
+  FlatList,
+  View,
+} from "react-native";
 import styled from "@emotion/native";
 import Swiper from "react-native-swiper";
 import Slides from "../components/Slides";
@@ -74,15 +80,16 @@ const Movies = ({ navigation: { navigate } }) => {
       </Swiper>
 
       <ListTitle>Top Rated Movies</ListTitle>
-      <ScrollView
+      <FlatList
         horizontal
-        showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 20 }}
-      >
-        {topRated.map((top) => (
-          <TopSlides key={top.id} top={top} />
-        ))}
-      </ScrollView>
+        showsHorizontalScrollIndicator={false}
+        data={topRated}
+        renderItem={({ item }) => <TopSlides top={item} />}
+        keyExtractor={(item) => item.id}
+        ItemSeparatorComponent={<View style={{ width: 10 }} />}
+      ></FlatList>
+
       <ListTitle>Upcoming Movies</ListTitle>
       {upComing.map((up) => (
         <UpcomingSlides key={up.id} up={up} />
