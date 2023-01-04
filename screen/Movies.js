@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, ActivityIndicator } from "react-native";
+import { ScrollView, ActivityIndicator, RefreshControl } from "react-native";
 import styled from "@emotion/native";
 import Swiper from "react-native-swiper";
 import Slides from "../components/Slides";
@@ -11,6 +11,7 @@ const Movies = ({ navigation: { navigate } }) => {
   const [topRated, setTopRated] = useState([]);
   const [upComing, setUpComing] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const BASE_URL = "https://api.themoviedb.org/3/movie";
   const API_KEY = "cac58e014429ea0819e52ec164529d1c";
@@ -41,6 +42,13 @@ const Movies = ({ navigation: { navigate } }) => {
     setIsLoading(false);
   };
 
+  //  스크롤로 새로고침 처리 - onRefresh에 넣는 함수
+  const onRefresh = async () => {
+    setIsRefreshing(true);
+    getData();
+    setIsRefreshing(false);
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -54,7 +62,11 @@ const Movies = ({ navigation: { navigate } }) => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+      }
+    >
       <Swiper height="100%" showsPagination={false} autoplay loop>
         {nowPlayings.map((movie) => (
           <Slides key={movie.id} movie={movie} />
