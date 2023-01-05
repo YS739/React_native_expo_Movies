@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, Linking, StyleSheet, useColorScheme } from "react-native";
 import styled from "@emotion/native";
-import { getImgPath, SCREEN_WIDTH } from "../common/utils";
-import { SCREEN_HEIGHT } from "../common/utils";
+import { getImgPath, SCREEN_HEIGHT } from "../common/utils";
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import { useQuery } from "react-query";
@@ -13,6 +12,8 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { authService, dbService } from "../common/firebase";
 import ReviewCard from "../components/ReviewCard";
 import ReviewModal from "../components/ReviewModal";
+
+import { Text } from "react-native";
 
 const Detail = ({
   navigation: { navigate },
@@ -119,6 +120,7 @@ export default Detail;
 
 // styled components
 const Container = styled.ScrollView``;
+
 const View = styled.View`
   height: ${SCREEN_HEIGHT / 4 + "px"};
   justify-content: flex-end;

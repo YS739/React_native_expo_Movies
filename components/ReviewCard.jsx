@@ -39,6 +39,7 @@ const Column = styled.TouchableOpacity`
   height: 200px;
 `;
 const AbovePart = styled.View``;
+
 const ReviewDate = styled.Text`
   color: ${(props) => props.theme.color.title};
   margin-bottom: 10px;
