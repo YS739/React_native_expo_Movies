@@ -11,7 +11,7 @@ import Swiper from "react-native-swiper";
 import Slides from "../components/Slides";
 import TopSlides from "../components/TopSlides";
 import UpcomingSlides from "../components/UpcomingSlides";
-import { useQuery, useQueryClient } from "react-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "react-query";
 import { getNowPlayings, getTopRated, getUpcoming } from "../common/api";
 
 const Movies = ({ navigation: { navigate } }) => {
@@ -26,10 +26,28 @@ const Movies = ({ navigation: { navigate } }) => {
     ["Movies", "TopRated"],
     getTopRated
   );
-  const { data: upComingData, isLoading: isLoadingUC } = useQuery(
-    ["Movies", "Upcoming"],
-    getUpcoming
-  );
+  const {
+    data: upComingData,
+    isLoading: isLoadingUC,
+
+    // fetch more를 위한 method 함수
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(["Movies", "Upcoming"], getUpcoming, {
+    // getUpcoming 함수가 실행되면 getNextPageParam 콜백함수가 먼저 실행됨
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page < lastPage.total_pages) {
+        return lastPage.page + 1;
+      }
+    },
+  });
+
+  // flat List의 onEndReached에 넣는 함수
+  const fetchMore = async () => {
+    if (hasNextPage) {
+      await fetchNextPage();
+    }
+  };
 
   //  스크롤로 새로고침 처리 - onRefresh에 넣는 함수
   const onRefresh = async () => {
@@ -50,6 +68,8 @@ const Movies = ({ navigation: { navigate } }) => {
 
   return (
     <FlatList
+      onEndReached={fetchMore}
+      onEndReachedThreshold={0.5}
       refreshing={isRefreshing}
       onRefresh={onRefresh}
       ListHeaderComponent={
@@ -61,6 +81,8 @@ const Movies = ({ navigation: { navigate } }) => {
           </Swiper>
           <ListTitle>Top Rated Movies</ListTitle>
           <FlatList
+            onEndReached={fetchMore}
+            onEndReachedThreshold={0.5}
             horizontal
             contentContainerStyle={{ paddingHorizontal: 20 }}
             showsHorizontalScrollIndicator={false}
@@ -73,7 +95,8 @@ const Movies = ({ navigation: { navigate } }) => {
           <ListTitle>Upcoming Movies</ListTitle>
         </>
       }
-      data={upComingData.results}
+      // data = 누적되어 지는 1차원 영화 리스트 배열
+      data={upComingData.pages.map((page) => page.results).flat()}
       renderItem={({ item }) => <UpcomingSlides movie={item} />}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={<View style={{ height: 15 }} />}
