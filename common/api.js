@@ -1,3 +1,6 @@
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { dbService } from "./firebase";
+
 const BASE_URL = "https://api.themoviedb.org/3/movie";
 const API_KEY = "cac58e014429ea0819e52ec164529d1c";
 

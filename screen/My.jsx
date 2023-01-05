@@ -21,7 +21,7 @@ const My = ({ navigation: { reset, navigate, setOptions } }) => {
   const [reviews, setReviews] = useState([]);
 
   const goToReview = (theReview) => {
-    navigate("Stack", {
+    navigate("Stacks", {
       screen: "Review",
       params: { review: theReview, from: "My" },
     });

@@ -46,6 +46,7 @@ const Detail = ({
       collection(dbService, "reviews"),
       orderBy("createdAt", "desc")
     );
+
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const newReviews = snapshot.docs.map((doc) => ({
         id: doc.id,
