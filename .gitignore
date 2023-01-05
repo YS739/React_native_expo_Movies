@@ -10,5 +10,8 @@ npm-debug.*
 *.orig.*
 web-build/
 
+common/firebase.js
+# TODO: 이렇게 하는 게 맞나?
+
 # macOS
 .DS_Store

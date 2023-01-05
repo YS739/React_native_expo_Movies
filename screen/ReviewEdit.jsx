@@ -1,7 +1,7 @@
 import React from "react";
 
-const Login = () => {
+const ReviewEdit = () => {
   return <div></div>;
 };
 
-export default Login;
+export default ReviewEdit;
