@@ -15,7 +15,28 @@ const Stacks = ({ navigation: { goBack } }) => {
         headerTintColor: isDark ? YELLOW_COLOR : PURPLE_COLOR,
         headerLeft: () => (
           <TouchableOpacity onPress={() => goBack()}>
-            <Text style={{ color: YELLOW_COLOR, fontSize: "20px" }}>뒤로</Text>
+            <Text
+              style={{
+                color: isDark ? YELLOW_COLOR : PURPLE_COLOR,
+                fontSize: "18px",
+              }}
+            >
+              뒤로
+            </Text>
+          </TouchableOpacity>
+        ),
+        headerRight: () => (
+          <TouchableOpacity>
+            {/* onPress={handleAuth} */}
+            <Text
+              style={{
+                color: isDark ? YELLOW_COLOR : PURPLE_COLOR,
+                fontSize: "18px",
+              }}
+            >
+              로그인
+              {/* {authService.currentUser ? "로그아웃" : "로그인"} */}
+            </Text>
           </TouchableOpacity>
         ),
       }}
