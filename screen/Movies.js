@@ -21,6 +21,7 @@ const Movies = ({ navigation: { navigate } }) => {
 
   const BASE_URL = "https://api.themoviedb.org/3/movie";
   const API_KEY = "cac58e014429ea0819e52ec164529d1c";
+
   const getNowPlayings = async () => {
     const { results } = await fetch(
       `${BASE_URL}/now_playing?api_key=${API_KEY}&language=en-US&page=1`
