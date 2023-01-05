@@ -11,35 +11,30 @@ import Swiper from "react-native-swiper";
 import Slides from "../components/Slides";
 import TopSlides from "../components/TopSlides";
 import UpcomingSlides from "../components/UpcomingSlides";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { getNowPlayings, getTopRated, getUpcoming } from "../common/api";
 
 const Movies = ({ navigation: { navigate } }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const queryClient = useQueryClient();
 
-  const {
-    data: nowPlayingsData,
-    isLoading: isLoadingNP,
-    refetch: refetchNP,
-  } = useQuery("NowPlayings", getNowPlayings);
-  const {
-    data: topRatedData,
-    isLoading: isLoadingTR,
-    refetch: refetchTR,
-  } = useQuery("TopRated", getTopRated);
-  const {
-    data: upComingData,
-    isLoading: isLoadingUC,
-    refetch: refetchUC,
-  } = useQuery("Upcoming", getUpcoming);
+  const { data: nowPlayingsData, isLoading: isLoadingNP } = useQuery(
+    ["Movies", "NowPlayings"],
+    getNowPlayings
+  );
+  const { data: topRatedData, isLoading: isLoadingTR } = useQuery(
+    ["Movies", "TopRated"],
+    getTopRated
+  );
+  const { data: upComingData, isLoading: isLoadingUC } = useQuery(
+    ["Movies", "Upcoming"],
+    getUpcoming
+  );
 
   //  스크롤로 새로고침 처리 - onRefresh에 넣는 함수
   const onRefresh = async () => {
     setIsRefreshing(true);
-    await Promise.all([refetchNP(), refetchTR(), refetchUC()]);
-    // await refetchNP();
-    // await refetchTR();
-    // await refetchUC();
+    await queryClient.refetchQueries(["Movies"]);
     setIsRefreshing(false);
   };
 
