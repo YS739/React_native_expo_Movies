@@ -6,16 +6,15 @@ export const getNowPlayings = () =>
     `${BASE_URL}/now_playing?api_key=${API_KEY}&language=en-US&page=1`
   ).then((res) => res.json());
 
-export const getTopRated = () =>
-  fetch(`${BASE_URL}/top_rated?api_key=${API_KEY}&language=en-US&page=1`).then(
-    (res) => res.json()
-  );
+export const getTopRated = ({ pageParam = 1 }) =>
+  fetch(
+    `${BASE_URL}/top_rated?api_key=${API_KEY}&language=en-US&page=${pageParam}`
+  ).then((res) => res.json());
 
-export const getUpcoming = ({ pageParam = 1 }) => {
-  return fetch(
+export const getUpcoming = ({ pageParam = 1 }) =>
+  fetch(
     `${BASE_URL}/upcoming?api_key=${API_KEY}&language=en-US&page=${pageParam}`
   ).then((res) => res.json());
-};
 
 export const getDetail = (params) => {
   const [, movieId] = params.queryKey;

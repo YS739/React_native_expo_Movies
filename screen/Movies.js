@@ -22,10 +22,22 @@ const Movies = ({ navigation: { navigate } }) => {
     ["Movies", "NowPlayings"],
     getNowPlayings
   );
-  const { data: topRatedData, isLoading: isLoadingTR } = useQuery(
-    ["Movies", "TopRated"],
-    getTopRated
-  );
+
+  const {
+    data: topRatedData,
+    isLoading: isLoadingTR,
+
+    // fetch more를 위한 method함수가 upComing과 겹쳐서 alias 씀
+    fetchNextPage: fetchNextTR,
+    hasNextPage: hasNextTR,
+  } = useInfiniteQuery(["Movies", "TopRated"], getTopRated, {
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page < lastPage.total_pages) {
+        return lastPage.page + 1;
+      }
+    },
+  });
+
   const {
     data: upComingData,
     isLoading: isLoadingUC,
@@ -44,8 +56,13 @@ const Movies = ({ navigation: { navigate } }) => {
 
   // flat List의 onEndReached에 넣는 함수
   const fetchMore = async () => {
+    // upcoming
     if (hasNextPage) {
       await fetchNextPage();
+    }
+    // top rated
+    if (hasNextTR) {
+      await fetchNextTR();
     }
   };
 
@@ -82,11 +99,11 @@ const Movies = ({ navigation: { navigate } }) => {
           <ListTitle>Top Rated Movies</ListTitle>
           <FlatList
             onEndReached={fetchMore}
-            onEndReachedThreshold={0.5}
+            onEndReachedThreshold={2}
             horizontal
             contentContainerStyle={{ paddingHorizontal: 20 }}
             showsHorizontalScrollIndicator={false}
-            data={topRatedData.results}
+            data={topRatedData.pages.map((page) => page.results).flat()}
             renderItem={({ item }) => <TopSlides movie={item} />}
             keyExtractor={(item) => item.id}
             ItemSeparatorComponent={<View style={{ width: 10 }} />}
