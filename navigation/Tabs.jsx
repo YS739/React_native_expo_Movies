@@ -5,12 +5,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import Movies from "../screen/Movies";
 import My from "../screen/My";
 import { useColorScheme } from "react-native";
-import {
-  DARK_COLOR,
-  GREEN_COLOR,
-  PURPLE_COLOR,
-  YELLOW_COLOR,
-} from "../common/color";
+import { DARK_COLOR, PURPLE_COLOR, YELLOW_COLOR } from "../common/colors";
 
 const Tab = createBottomTabNavigator();
 

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/native";
-import { getImgPath } from "../common/util";
+import { getImgPath } from "../common/utils";
 import { useNavigation } from "@react-navigation/native";
 
 const TopSlides = ({ movie }) => {

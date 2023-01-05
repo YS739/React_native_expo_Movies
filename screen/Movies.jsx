@@ -137,5 +137,5 @@ const ListTitle = styled.Text`
   margin-left: 20px;
   font-size: 20px;
   font-weight: 500;
-  color: ${(props) => props.theme.title};
+  color: ${(props) => props.theme.color.title};
 `;

@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { FlatList, Linking, StyleSheet, useColorScheme } from "react-native";
 import styled from "@emotion/native";
-import {
-  ActivityIndicator,
-  Linking,
-  StyleSheet,
-  useColorScheme,
-  ScrollView,
-} from "react-native";
-
+import { getImgPath, SCREEN_WIDTH } from "../common/utils";
+import { SCREEN_HEIGHT } from "../common/utils";
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
-import { getImgPath } from "../common/util";
 import { useQuery } from "react-query";
 import { getDetail } from "../common/api";
+import Loader from "../components/Loader";
+
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { authService, dbService } from "../common/firebase";
+import ReviewCard from "../components/ReviewCard";
+import ReviewModal from "../components/ReviewModal";
 
 const Detail = ({
   navigation: { navigate },
@@ -20,24 +20,47 @@ const Detail = ({
     params: { movieId },
   },
 }) => {
-  const isDark = useColorScheme() === "dark";
-  const { data, isLoading } = useQuery(["Detail", movieId], getDetail);
+  const [reviews, setReviews] = useState([]);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
+  const isDark = useColorScheme() === "dark";
   const openYoutube = async (key) => {
     const url = `https://www.youtube.com/watch?v=${key}`;
     await Linking.openURL(url);
   };
 
-  if (isLoading) {
-    return (
-      <Loader>
-        <ActivityIndicator />
-      </Loader>
+  const { data, isLoading } = useQuery(["movie", movieId], getDetail);
+
+  const handleAdding = async () => {
+    const isLogin = !!authService.currentUser;
+    if (!isLogin) {
+      navigate("Login");
+      return;
+    }
+    setIsOpenModal(true);
+  };
+
+  useEffect(() => {
+    const q = query(
+      collection(dbService, "reviews"),
+      orderBy("createdAt", "desc")
     );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const newReviews = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setReviews(newReviews);
+    });
+    return unsubscribe;
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (
-    <ScrollView>
+    <Container>
       <View>
         <BackdropImg
           style={StyleSheet.absoluteFill}
@@ -51,7 +74,7 @@ const Detail = ({
       </View>
       <Overview>{data.overview}</Overview>
       <YoutubeList>
-        {data?.videos.results.map((video) => (
+        {data?.videos?.results.map((video) => (
           <Row key={video.key} onPress={() => openYoutube(video.key)}>
             <AntDesign
               name="youtube"
@@ -63,24 +86,41 @@ const Detail = ({
         ))}
       </YoutubeList>
       <SectionTitle>Reviews</SectionTitle>
-      <AddReview onPress={() => {}}>
+      <AddReview onPress={handleAdding}>
         <TempText>Add Review</TempText>
       </AddReview>
-    </ScrollView>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: 20,
+          marginBottom: 50,
+          justifyContent: "flex-start",
+        }}
+        keyExtractor={(item) => item.id}
+        horizontal
+        data={reviews}
+        ItemSeparatorComponent={HSeprator}
+        renderItem={({ item }) => {
+          if (item.movieId === movieId) {
+            return <ReviewCard review={item} />;
+          }
+        }}
+      />
+      <ReviewModal
+        movieId={movieId}
+        isOpenModal={isOpenModal}
+        setIsOpenModal={setIsOpenModal}
+      />
+    </Container>
   );
 };
 
 export default Detail;
 
 // styled components
-const Loader = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
+const Container = styled.ScrollView``;
 const View = styled.View`
-  height: 200px;
+  height: ${SCREEN_HEIGHT / 4 + "px"};
   justify-content: flex-end;
 `;
 const BackdropImg = styled.Image`
@@ -94,7 +134,7 @@ const Title = styled.Text`
   margin-left: 20px;
 `;
 const Overview = styled.Text`
-  color: ${(props) => props.theme.upcomingText};
+  color: ${(props) => props.theme.color.overview};
   font-size: 15px;
   font-weight: 400;
   padding: 20px;
@@ -105,7 +145,7 @@ const Row = styled.TouchableOpacity`
   margin-bottom: 10px;
 `;
 const VideoName = styled.Text`
-  color: ${(props) => props.theme.upcomingText};
+  color: ${(props) => props.theme.color.title};
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;
@@ -117,7 +157,7 @@ const YoutubeList = styled.View`
 `;
 
 const SectionTitle = styled.Text`
-  color: ${(props) => props.theme.upcomingText};
+  color: ${(props) => props.theme.color.listTitle};
   font-size: 30px;
   margin-top: 20px;
   margin-left: 20px;
@@ -131,9 +171,13 @@ const AddReview = styled.TouchableOpacity`
   border-radius: 5px;
   border-width: 1px;
   align-items: center;
-  border-color: ${(props) => props.theme.title};
+  border-color: ${(props) => props.theme.color.title};
 `;
 const TempText = styled.Text`
   font-size: 20px;
-  color: ${(props) => props.theme.title};
+  color: ${(props) => props.theme.color.title};
+`;
+
+const HSeprator = styled.View`
+  width: 10px;
 `;

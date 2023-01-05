@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/native";
-import { getImgPath } from "../common/util";
+import { getImgPath } from "../common/utils";
 import { useNavigation } from "@react-navigation/native";
 
 const UpcomingSlides = ({ movie }) => {
@@ -46,14 +46,14 @@ const UpcomingPoster = styled.Image`
 const UpcomingTitle = styled.Text`
   font-size: 20px;
   font-weight: 500;
-  color: ${(props) => props.theme.upcomingText};
+  color: ${(props) => props.theme.color.listTitle};
 `;
 
 const UpcomingOverview = styled.Text`
   font-size: 15px;
   line-height: 20px;
   font-weight: 500;
-  color: ${(props) => props.theme.upcomingText};
+  color: ${(props) => props.theme.color.listTitle};
 `;
 
 const UpcomingMovieDesc = styled.View`
@@ -64,7 +64,7 @@ const UpcomingMovieDesc = styled.View`
 const Release = styled.Text`
   font-size: 16px;
   font-weight: 300;
-  color: ${(props) => props.theme.upcomingText};
+  color: ${(props) => props.theme.color.listTitle};
   margin-top: 10px;
   margin-bottom: 10px;
 `;

@@ -1,11 +1,25 @@
-import { DARK_COLOR, PURPLE_COLOR, YELLOW_COLOR } from "./color";
+import { DARK_COLOR, PURPLE_COLOR, YELLOW_COLOR } from "./colors";
 
 export const lightTheme = {
-  title: PURPLE_COLOR,
-  upcomingText: DARK_COLOR,
+  color: {
+    titleOnImg: "white",
+    overviewOnImg: "#d2dae2",
+    listTitle: DARK_COLOR,
+    title: PURPLE_COLOR,
+    overview: "#1e272e",
+    modalBg: "#d2dae2",
+    inputText: "white",
+  },
 };
 
 export const darkTheme = {
-  title: YELLOW_COLOR,
-  upcomingText: "white",
+  color: {
+    titleOnImg: "white",
+    overviewOnImg: "#d2dae2",
+    listTitle: YELLOW_COLOR,
+    title: YELLOW_COLOR,
+    overview: "#d2dae2",
+    modalBg: "#d2dae2",
+    inputText: "black",
+  },
 };

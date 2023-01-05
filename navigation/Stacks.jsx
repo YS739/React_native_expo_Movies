@@ -1,14 +1,14 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { TouchableOpacity, Text, useColorScheme } from "react-native";
-import { YELLOW_COLOR, PURPLE_COLOR } from "../common/color";
+import { YELLOW_COLOR, PURPLE_COLOR } from "../common/colors";
 import Detail from "../screen/Detail";
 import ReviewEdit from "../screen/ReviewEdit";
 import Login from "../screen/Login";
 import Review from "../screen/Review";
-import { authService } from "../firebase";
+import { authService } from "../common/firebase";
 import { signOut } from "firebase/auth";
 
-const Stack = createNativeStackNavigator();
+const NativeStack = createNativeStackNavigator();
 
 const Stacks = ({ navigation: { goBack } }) => {
   const isDark = useColorScheme() === "dark";
@@ -29,7 +29,7 @@ const Stacks = ({ navigation: { goBack } }) => {
   };
 
   return (
-    <Stack.Navigator
+    <NativeStack.Navigator
       screenOptions={{
         headerTitleAlign: "left",
         headerTintColor: isDark ? YELLOW_COLOR : PURPLE_COLOR,
@@ -65,7 +65,7 @@ const Stacks = ({ navigation: { goBack } }) => {
       <NativeStack.Screen name="Login" component={Login} />
       <NativeStack.Screen name="Review" component={Review} />
       <NativeStack.Screen name="ReviewEdit" component={ReviewEdit} />
-    </Stack.Navigator>
+    </NativeStack.Navigator>
   );
 };
 export default Stacks;

@@ -1,6 +1,6 @@
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { SCREEN_HEIGHT, getImgPath } from "../common/util";
+import { SCREEN_HEIGHT, getImgPath } from "../common/utils";
 import styled from "@emotion/native";
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
