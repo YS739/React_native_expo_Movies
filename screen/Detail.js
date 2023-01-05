@@ -11,6 +11,8 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import { getImgPath } from "../common/util";
+import { useQuery, useQueryClient } from "react-query";
+import { getDetail } from "../common/api";
 
 const Detail = ({
   navigation: { navigate },
@@ -18,29 +20,15 @@ const Detail = ({
     params: { movieId },
   },
 }) => {
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const isDark = useColorScheme() === "dark";
+  const queryClient = useQueryClient();
 
-  const BASE_URL = "https://api.themoviedb.org/3/movie";
-  const API_KEY = "cac58e014429ea0819e52ec164529d1c";
-  const getDetail = async () => {
-    const response = await fetch(
-      `${BASE_URL}/${movieId}?api_key=${API_KEY}&language=en-US&append_to_response=videos`
-    ).then((res) => res.json());
-    console.log(response);
-    setData(response);
-    setIsLoading(false);
-  };
+  const { data, isLoading } = useQuery(["Detail", movieId], getDetail);
 
   const openYoutube = async (key) => {
     const url = `https://www.youtube.com/watch?v=${key}`;
     await Linking.openURL(url);
   };
-
-  useEffect(() => {
-    getDetail();
-  }, []);
 
   if (isLoading) {
     return (
@@ -65,7 +53,7 @@ const Detail = ({
       </View>
       <Overview>{data.overview}</Overview>
       <YoutubeList>
-        {data?.videos?.results.map((video) => (
+        {data?.videos.results.map((video) => (
           <Row key={video.key} onPress={() => openYoutube(video.key)}>
             <AntDesign
               name="youtube"
