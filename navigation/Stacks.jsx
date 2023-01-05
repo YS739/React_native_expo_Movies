@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { TouchableOpacity, Text, useColorScheme } from "react-native";
-import { YELLOW_COLOR, PURPLE_COLOR } from "../common/colors";
+import { YELLOW_COLOR, PURPLE_COLOR, DARK_COLOR } from "../common/colors";
 import Detail from "../screen/Detail";
 import ReviewEdit from "../screen/ReviewEdit";
 import Login from "../screen/Login";
@@ -10,7 +10,7 @@ import { signOut } from "firebase/auth";
 
 const NativeStack = createNativeStackNavigator();
 
-const Stacks = ({ navigation: { goBack } }) => {
+const Stacks = ({ navigation: { goBack, navigate, setOptions } }) => {
   const isDark = useColorScheme() === "dark";
 
   const handleAuth = () => {
@@ -27,34 +27,21 @@ const Stacks = ({ navigation: { goBack } }) => {
       navigate("Login");
     }
   };
-
   return (
     <NativeStack.Navigator
       screenOptions={{
-        headerTitleAlign: "left",
+        headerTitleAlign: "center",
         headerTintColor: isDark ? YELLOW_COLOR : PURPLE_COLOR,
         headerLeft: () => (
           <TouchableOpacity onPress={() => goBack()}>
-            <Text
-              style={{
-                color: isDark ? YELLOW_COLOR : PURPLE_COLOR,
-                fontSize: "18px",
-              }}
-            >
+            <Text style={{ color: isDark ? YELLOW_COLOR : DARK_COLOR }}>
               뒤로
             </Text>
           </TouchableOpacity>
         ),
         headerRight: () => (
-          <TouchableOpacity>
-            onPress={handleAuth}
-            <Text
-              style={{
-                color: isDark ? YELLOW_COLOR : PURPLE_COLOR,
-                fontSize: "18px",
-              }}
-            >
-              로그인
+          <TouchableOpacity onPress={handleAuth}>
+            <Text style={{ color: isDark ? YELLOW_COLOR : DARK_COLOR }}>
               {authService.currentUser ? "로그아웃" : "로그인"}
             </Text>
           </TouchableOpacity>
@@ -68,4 +55,5 @@ const Stacks = ({ navigation: { goBack } }) => {
     </NativeStack.Navigator>
   );
 };
+
 export default Stacks;

@@ -35,6 +35,7 @@ const My = ({ navigation: { reset, navigate, setOptions } }) => {
       })
       .catch((err) => alert(err));
   };
+
   useFocusEffect(
     useCallback(() => {
       if (!authService.currentUser) {
@@ -49,7 +50,7 @@ const My = ({ navigation: { reset, navigate, setOptions } }) => {
               },
             },
             {
-              name: "Stack",
+              name: "Stacks",
               params: {
                 screen: "Login",
               },
