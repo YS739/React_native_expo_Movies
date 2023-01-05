@@ -17,7 +17,6 @@ export const getUpcoming = () =>
   );
 
 export const getDetail = (params) => {
-  console.log("params:", params);
   const [, movieId] = params.queryKey;
   return fetch(
     `${BASE_URL}/${movieId}?api_key=${API_KEY}&language=en-US&append_to_response=videos`

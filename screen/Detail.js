@@ -11,7 +11,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import { getImgPath } from "../common/util";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { getDetail } from "../common/api";
 
 const Detail = ({
@@ -21,8 +21,6 @@ const Detail = ({
   },
 }) => {
   const isDark = useColorScheme() === "dark";
-  const queryClient = useQueryClient();
-
   const { data, isLoading } = useQuery(["Detail", movieId], getDetail);
 
   const openYoutube = async (key) => {
