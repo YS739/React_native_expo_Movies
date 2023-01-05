@@ -40,6 +40,7 @@ const Login = ({ navigation: { goBack, setOptions } }) => {
       return true;
     }
   };
+
   const handleLogin = () => {
     // 유효성 검사
     if (validateInputs()) {

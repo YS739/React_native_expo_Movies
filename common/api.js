@@ -25,4 +25,11 @@ export const getDetail = ({ queryKey }) => {
   ).then((res) => res.json());
 };
 
-// Review.jsx
+// ReviewEdit.jsx
+export const deleteReview = async (reviewId) => {
+  await deleteDoc(doc(dbService, "reviews", reviewId));
+};
+
+export const editReview = async ({ reviewId, editingObj }) => {
+  await updateDoc(doc(dbService, "reviews", reviewId), editingObj);
+};

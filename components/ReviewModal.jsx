@@ -9,9 +9,11 @@ const ReviewModal = ({ isOpenModal, setIsOpenModal, movieId }) => {
   const [modalTitle, setModalTitle] = useState("");
   const [modalContent, setModalContent] = useState("");
   const [ratings, setRatings] = useState(0);
+
   const getRatings = (rating) => {
     setRatings(rating);
   };
+
   const addReview = async () => {
     await addDoc(collection(dbService, "reviews"), {
       title: modalTitle,
@@ -26,8 +28,9 @@ const ReviewModal = ({ isOpenModal, setIsOpenModal, movieId }) => {
     setModalContent("");
     setRatings(0);
   };
+
   return (
-    <Modal visible={isOpenModal} transparent animationType="slide">
+    <Modal visible={isOpenModal} transparent animationType="fade">
       <Backdrop>
         <Dialog>
           <InputWrapper>
